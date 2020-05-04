@@ -13,6 +13,7 @@ int aleatorio(int min,int max);
 void cargarTareas(T_tarea **tareas,int cant_tareas);
 void ordenartareas(T_tarea **tareas,T_tarea **tareasrealizadas,int cant_tareas);
 void mostrarTareas(T_tarea **tareas,int cant_tareas);
+T_tarea buscaTareaID(T_tarea ,int identificador);
 
 int main()
 {

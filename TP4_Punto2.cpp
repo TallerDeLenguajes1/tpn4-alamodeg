@@ -98,7 +98,7 @@ T_tarea *buscaTareaPalabra(T_tarea **tareas,int cant_tareas ,char clave[])
     {
         while (tareas[i] != NULL) //Mientras lo que busca sea distinto del nulo,sino no puede comparar
         {
-            if (strcmp(tareas[i]->Descripcion,clave) )
+            if (strcmp(tareas[i]->Descripcion,clave) == 0)
             {
                 return tareas[i];
             }

@@ -31,6 +31,14 @@ int main()
     puts("------ BUSQUEDA PALABRA CLAVE ------");
     
     T_tarea *busquedapalabra = buscaTareaPalabra(Tareas_Realizadas,cant_tareas,clave);
+    if (busquedapalabra == NULL)
+    {
+        puts("No hay ninguna tarea igual a esa palabra clave");
+    }
+    else
+    {
+        printf("Se encontro la tarea, ID: %d DURACION: %d",busquedapalabra->TareaID,busquedapalabra->Duracion);
+    }
     scanf(" %c");
     return 0;
 }
@@ -85,21 +93,16 @@ void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas
 }
 T_tarea *buscaTareaPalabra(T_tarea **tareas,int cant_tareas ,char clave[])
 {
-    T_tarea *nula;
-    //Cargo una nula en caso de no encontrar la tarea buscada
-    nula->TareaID = 0;
-    nula->Descripcion = NULL;
-    nula->Duracion = 0;
-    
     puts("Ingrese la tarea que desea buscar"); scanf("%s",clave);
     for (int i = 0; i < cant_tareas; i++)
     {
-        if (strcmp(tareas[i]->Descripcion,clave) )
+        while (tareas[i] != NULL) //Mientras lo que busca sea distinto del nulo,sino no puede comparar
         {
-            printf("Palabra clave: '%s' TareaID: %d Duracion: %d minutos\n",clave,tareas[i]->TareaID,tareas[i]->Duracion);
-            return tareas[i];
+            if (strcmp(tareas[i]->Descripcion,clave) )
+            {
+                return tareas[i];
+            }
         }
     }
-    printf("No se encontro tarea asociada al ID\n");
-    return nula; //Problemas al retornar nula, cuando no encuentra la palabra,otro problema es que no muestra la duracion y el id correcto
+    return NULL;
 }

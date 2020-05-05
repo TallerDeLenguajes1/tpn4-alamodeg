@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+char clave[100];
+
 typedef struct
 {
     int TareaID;//Numerado en ciclo iterativo
@@ -13,7 +15,7 @@ int aleatorio(int min,int max);
 void cargarTareas(T_tarea **tareas,int cant_tareas);
 void ordenartareas(T_tarea **tareas,T_tarea **tareasrealizadas,int cant_tareas);
 void mostrarTareas(T_tarea **tareas,int cant_tareas);
-T_tarea buscaTareaID(T_tarea ,int identificador);
+T_tarea buscaTareaPalabra(T_tarea **tareas,char clave);
 
 int main()
 {
@@ -79,4 +81,8 @@ void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas
             tareasrealizadas[i] = NULL; //Cargo NULL en las tareas no realizadas
         }
     }
+}
+T_tarea buscaTareaPalabra(T_tarea **tareas,char clave)
+{
+    
 }

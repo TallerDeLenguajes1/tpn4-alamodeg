@@ -30,6 +30,7 @@ int main()
     ordenartareas(Tareas_Pendientes,Tareas_Realizadas,cant_tareas); 
     puts("------ TAREAS REALIZADAS ------");
     mostrarTareas(Tareas_Realizadas,cant_tareas);
+    mostrarTareas(Tareas_Pendientes,cant_tareas);
     puts("------ BUSQUEDA ID DE TAREAS YA REALIZADAS------");
     T_tarea *resultadoid = buscarTareaID(Tareas_Realizadas,cant_tareas);
     if (resultadoid == NULL)
@@ -38,7 +39,7 @@ int main()
     }
     else
     {
-        printf("DESCRIPCION:%s DURACION:%d",resultadoid->Descripcion,resultadoid->Duracion);
+        printf("Se encontro la tarea, su id es %d",resultadoid->TareaID);
     }
     
     scanf(" %c");
@@ -95,8 +96,8 @@ void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas
 }
 T_tarea *buscarTareaID(T_tarea **tareas,int cant_tareas)
 {
-    int aux;  
-    printf("Ingrese el id de la tarea a buscar, el maximo es %d\n",cant_tareas);
+    int aux;
+    printf("Ingrese el id de la tarea a buscar\n");
     scanf("%d",&aux);
     for (int i = 0; i < cant_tareas; i++)
     {

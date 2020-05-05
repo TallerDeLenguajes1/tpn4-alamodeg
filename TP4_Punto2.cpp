@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-char clave[100];
-
 typedef struct
 {
     int TareaID;//Numerado en ciclo iterativo
@@ -15,11 +13,11 @@ int aleatorio(int min,int max);
 void cargarTareas(T_tarea **tareas,int cant_tareas);
 void ordenartareas(T_tarea **tareas,T_tarea **tareasrealizadas,int cant_tareas);
 void mostrarTareas(T_tarea **tareas,int cant_tareas);
-T_tarea buscaTareaPalabra(T_tarea **tareas,char clave);
+T_tarea *buscaTareaPalabra(T_tarea **tareas,int cant_tareas, char clave[]);
 
 int main()
 {
-    int cant_tareas;
+    int cant_tareas; char clave[20];
     printf("Ingrese la cantidad de tareas que desea cargar: "); 
     scanf("%d",&cant_tareas);
     T_tarea **Tareas_Pendientes =(T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
@@ -30,6 +28,9 @@ int main()
     ordenartareas(Tareas_Pendientes,Tareas_Realizadas,cant_tareas); 
     puts("------ TAREAS REALIZADAS ------");
     mostrarTareas(Tareas_Realizadas,cant_tareas);
+    puts("------ BUSQUEDA PALABRA CLAVE ------");
+    
+    T_tarea *busquedapalabra = buscaTareaPalabra(Tareas_Realizadas,cant_tareas,clave);
     scanf(" %c");
     return 0;
 }
@@ -82,7 +83,23 @@ void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas
         }
     }
 }
-T_tarea buscaTareaPalabra(T_tarea **tareas,char clave)
+T_tarea *buscaTareaPalabra(T_tarea **tareas,int cant_tareas ,char clave[])
 {
+    T_tarea *nula;
+    //Cargo una nula en caso de no encontrar la tarea buscada
+    nula->TareaID = 0;
+    nula->Descripcion = NULL;
+    nula->Duracion = 0;
     
+    puts("Ingrese la tarea que desea buscar"); scanf("%s",clave);
+    for (int i = 0; i < cant_tareas; i++)
+    {
+        if (strcmp(tareas[i]->Descripcion,clave) )
+        {
+            printf("Palabra clave: '%s' TareaID: %d Duracion: %d minutos\n",clave,tareas[i]->TareaID,tareas[i]->Duracion);
+            return tareas[i];
+        }
+    }
+    printf("No se encontro tarea asociada al ID\n");
+    return nula; //Problemas al retornar nula, cuando no encuentra la palabra,otro problema es que no muestra la duracion y el id correcto
 }

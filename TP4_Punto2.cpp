@@ -13,15 +13,17 @@ int aleatorio(int min,int max);
 void cargarTareas(T_tarea **tareas,int cant_tareas);
 void ordenartareas(T_tarea **tareas,T_tarea **tareasrealizadas,int cant_tareas);
 void mostrarTareas(T_tarea **tareas,int cant_tareas);
-T_tarea buscarTareaID(T_tarea **tareas,int cant_tareas);
+T_tarea *buscarTareaID(T_tarea **tareas,int cant_tareas);
 
 int main()
 {
     int cant_tareas;
     printf("Ingrese la cantidad de tareas que desea cargar: "); 
     scanf("%d",&cant_tareas);
-    T_tarea **Tareas_Pendientes =(T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
-    T_tarea **Tareas_Realizadas =(T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
+    
+    T_tarea **Tareas_Pendientes = (T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
+    T_tarea **Tareas_Realizadas = (T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
+    
     cargarTareas(Tareas_Pendientes,cant_tareas);
     puts("------ TAREAS PENDIENTES ------");
     mostrarTareas(Tareas_Pendientes,cant_tareas);
@@ -29,11 +31,16 @@ int main()
     puts("------ TAREAS REALIZADAS ------");
     mostrarTareas(Tareas_Realizadas,cant_tareas);
     puts("------ BUSQUEDA ID DE TAREAS YA REALIZADAS------");
-    T_tarea resultadoid = buscarTareaID(Tareas_Realizadas,cant_tareas);
-    if (resultadoid.TareaID == 0)
+    T_tarea *resultadoid = buscarTareaID(Tareas_Realizadas,cant_tareas);
+    if (resultadoid == NULL)
     {
-        puts("holis");
+        printf("No se encontro ninguna tarea relacionada a ese ID\n");
     }
+    else
+    {
+        printf("DESCRIPCION:%s DURACION:%d",resultadoid->Descripcion,resultadoid->Duracion);
+    }
+    
     scanf(" %c");
     return 0;
 }
@@ -86,24 +93,20 @@ void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas
         }
     }
 }
-T_tarea buscarTareaID(T_tarea **tareas,int cant_tareas)
+T_tarea *buscarTareaID(T_tarea **tareas,int cant_tareas)
 {
-    int aux; T_tarea nula;
-    //Cargo una nula en caso de no encontrar el valor buscado)
-    nula.TareaID = 0;
-    nula.Descripcion = NULL;
-    nula.Duracion = 0;
-    
+    int aux;  
     printf("Ingrese el id de la tarea a buscar, el maximo es %d\n",cant_tareas);
     scanf("%d",&aux);
     for (int i = 0; i < cant_tareas; i++)
     {
-        if (tareas[i]->TareaID == aux)
+        while (tareas[i] != NULL) //Para poder comparar el numero cuando la tarea[i] no es nula.
         {
-            printf("La tarea correspondiente al ID %d es %s\n",aux,tareas[i]->Descripcion);
-            return *tareas[i];
+            if (tareas[i]->TareaID == aux)
+            {
+                return tareas[i];
+            }
         }
     }
-    printf("No se encontro tarea asociada al ID\n");
-    return nula; //Problemas al retornar nula, cuando no encuentra el id
+    return NULL;
 }

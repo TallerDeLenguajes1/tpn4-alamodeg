@@ -96,13 +96,13 @@ T_tarea *buscaTareaPalabra(T_tarea **tareas,int cant_tareas ,char clave[])
     puts("Ingrese la tarea que desea buscar"); scanf("%s",clave);
     for (int i = 0; i < cant_tareas; i++)
     {
-        while (tareas[i] != NULL) //Mientras lo que busca sea distinto del nulo,sino no puede comparar
+        if (tareas[i] != NULL)
         {
             if (strcmp(tareas[i]->Descripcion,clave) == 0)
             {
                 return tareas[i];
             }
-        }
+        } 
     }
     return NULL;
 }

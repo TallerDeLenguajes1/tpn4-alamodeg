@@ -30,7 +30,6 @@ int main()
     ordenartareas(Tareas_Pendientes,Tareas_Realizadas,cant_tareas); 
     puts("------ TAREAS REALIZADAS ------");
     mostrarTareas(Tareas_Realizadas,cant_tareas);
-    mostrarTareas(Tareas_Pendientes,cant_tareas);
     puts("------ BUSQUEDA ID DE TAREAS YA REALIZADAS------");
     T_tarea *resultadoid = buscarTareaID(Tareas_Realizadas,cant_tareas);
     if (resultadoid == NULL)
@@ -48,6 +47,7 @@ int main()
 int aleatorio(int min,int max){
     return min + rand() % (max-min+1);
 }
+
 void cargarTareas(T_tarea **tareas,int cant_tareas)
 {
     
@@ -63,6 +63,7 @@ void cargarTareas(T_tarea **tareas,int cant_tareas)
         tareas[i]->Duracion = aleatorio(1,10);
     }
 }
+
 void mostrarTareas(T_tarea **tareas,int cant_tareas)
 {
     for (int i = 0; i < cant_tareas; i++)
@@ -76,13 +77,14 @@ void mostrarTareas(T_tarea **tareas,int cant_tareas)
         }
     }
 }
+
 void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas)
 {
     for (int i = 0; i < cant_tareas; i++)
     {
         char aux[3];
-        printf("¿Completo la tarea N%d? Tarea: %s (Si/No)\n",i+1,tareas[i]->Descripcion); scanf("%s",aux);
-        if (strcmp(aux,"SI") == 0 || strcmp(aux,"si") == 0) //Comparo las cadenas, devuelve 0 si son iguales
+        printf("¿Completo la tarea N%d? TAREA: %s (SI/NO)\n",i+1,tareas[i]->Descripcion); scanf("%s",aux);
+        if (strcmp(aux,"SI") == 0 || strcmp(aux,"si") == 0 || strcmp(aux,"Si") == 0)  //Comparo las cadenas, devuelve 0 si son iguales
         {
             tareasrealizadas[i] = (T_tarea*)malloc(sizeof(T_tarea));
             tareasrealizadas[i] = tareas[i];
@@ -90,10 +92,11 @@ void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas
         }
         else
         {
-            tareasrealizadas[i] = NULL; //Cargo NULL en las tareas no realizadas
+            tareasrealizadas[i] = NULL; //Cargo NULL en las tareas que no se realizaron
         }
     }
 }
+
 T_tarea *buscarTareaID(T_tarea **tareas,int cant_tareas)
 {
     int aux;
@@ -101,7 +104,7 @@ T_tarea *buscarTareaID(T_tarea **tareas,int cant_tareas)
     scanf("%d",&aux);
     for (int i = 0; i < cant_tareas; i++)
     {
-        while (tareas[i] != NULL) //Para poder comparar el numero cuando la tarea[i] no es nula.
+        if (tareas[i] != NULL)  //ES NECESARIA porque no puede comparar el id con el nulo y se rompia el codigo
         {
             if (tareas[i]->TareaID == aux)
             {

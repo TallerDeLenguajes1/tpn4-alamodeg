@@ -14,14 +14,17 @@ void cargarTareas(T_tarea **tareas,int cant_tareas);
 void ordenartareas(T_tarea **tareas,T_tarea **tareasrealizadas,int cant_tareas);
 void mostrarTareas(T_tarea **tareas,int cant_tareas);
 T_tarea *buscaTareaPalabra(T_tarea **tareas,int cant_tareas, char clave[]);
+T_tarea *buscarTareaID(T_tarea **tareas,int cant_tareas);
 
 int main()
 {
     int cant_tareas; char clave[20];
     printf("Ingrese la cantidad de tareas que desea cargar: "); 
     scanf("%d",&cant_tareas);
-    T_tarea **Tareas_Pendientes =(T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
-    T_tarea **Tareas_Realizadas =(T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
+    
+    T_tarea **Tareas_Pendientes = (T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
+    T_tarea **Tareas_Realizadas = (T_tarea**)malloc(cant_tareas * sizeof(T_tarea*));
+    
     cargarTareas(Tareas_Pendientes,cant_tareas);
     puts("------ TAREAS PENDIENTES ------");
     mostrarTareas(Tareas_Pendientes,cant_tareas);
@@ -29,7 +32,6 @@ int main()
     puts("------ TAREAS REALIZADAS ------");
     mostrarTareas(Tareas_Realizadas,cant_tareas);
     puts("------ BUSQUEDA PALABRA CLAVE ------");
-    
     T_tarea *busquedapalabra = buscaTareaPalabra(Tareas_Realizadas,cant_tareas,clave);
     if (busquedapalabra == NULL)
     {
@@ -37,14 +39,26 @@ int main()
     }
     else
     {
-        printf("Se encontro la tarea, ID: %d DURACION: %d",busquedapalabra->TareaID,busquedapalabra->Duracion);
+        printf("Se encontro la tarea, ID: %d DURACION: %d\n",busquedapalabra->TareaID,busquedapalabra->Duracion);
     }
+    puts("------ BUSQUEDA ID DE TAREAS YA REALIZADAS------");
+    T_tarea *resultadoid = buscarTareaID(Tareas_Realizadas,cant_tareas);
+    if (resultadoid == NULL)
+    {
+        printf("No se encontro ninguna tarea relacionada a ese ID\n");
+    }
+    else
+    {
+        printf("Se encontro la tarea, su id es %d\n",resultadoid->TareaID);
+    }
+    
     scanf(" %c");
     return 0;
 }
 int aleatorio(int min,int max){
     return min + rand() % (max-min+1);
 }
+
 void cargarTareas(T_tarea **tareas,int cant_tareas)
 {
     
@@ -60,6 +74,7 @@ void cargarTareas(T_tarea **tareas,int cant_tareas)
         tareas[i]->Duracion = aleatorio(1,10);
     }
 }
+
 void mostrarTareas(T_tarea **tareas,int cant_tareas)
 {
     for (int i = 0; i < cant_tareas; i++)
@@ -73,13 +88,14 @@ void mostrarTareas(T_tarea **tareas,int cant_tareas)
         }
     }
 }
+
 void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas)
 {
     for (int i = 0; i < cant_tareas; i++)
     {
         char aux[3];
-        printf("¿Completo la tarea N%d? Tarea: %s (Si/No)\n",i+1,tareas[i]->Descripcion); scanf("%s",aux);
-        if (strcmp(aux,"SI") == 0 || strcmp(aux,"si") == 0) //Comparo las cadenas, devuelve 0 si son iguales
+        printf("¿Completo la tarea N%d? TAREA: %s (SI/NO)\n",i+1,tareas[i]->Descripcion); scanf("%s",aux);
+        if (strcmp(aux,"SI") == 0 || strcmp(aux,"si") == 0 || strcmp(aux,"Si") == 0)  //Comparo las cadenas, devuelve 0 si son iguales
         {
             tareasrealizadas[i] = (T_tarea*)malloc(sizeof(T_tarea));
             tareasrealizadas[i] = tareas[i];
@@ -87,9 +103,27 @@ void ordenartareas(T_tarea **tareas, T_tarea **tareasrealizadas, int cant_tareas
         }
         else
         {
-            tareasrealizadas[i] = NULL; //Cargo NULL en las tareas no realizadas
+            tareasrealizadas[i] = NULL; //Cargo NULL en las tareas que no se realizaron
         }
     }
+}
+
+T_tarea *buscarTareaID(T_tarea **tareas,int cant_tareas)
+{
+    int aux;
+    printf("Ingrese el id de la tarea a buscar\n");
+    scanf("%d",&aux);
+    for (int i = 0; i < cant_tareas; i++)
+    {
+        if (tareas[i] != NULL)  //ES NECESARIA porque no puede comparar el id con el nulo y se rompia el codigo
+        {
+            if (tareas[i]->TareaID == aux)
+            {
+                return tareas[i];
+            }
+        }
+    }
+    return NULL;
 }
 T_tarea *buscaTareaPalabra(T_tarea **tareas,int cant_tareas ,char clave[])
 {
